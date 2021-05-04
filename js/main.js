@@ -3,43 +3,52 @@ $ = jQuery;
 // ====================================================================================================
 
 
-
-// Функция верификации e-mail
-function isEmail(email) {
-	var regex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-	return regex.test(email);
-}
-
-jQuery(document).ready(function() {
-	
-	// Сразу маскируем все поля телефонов
-	var inputmask_phone = {"mask": "+7(999)999-99-99"};
-	jQuery("input[type=tel]").inputmask(inputmask_phone);
-
-	// Типовой скрипт для отправки сообщений на почту
-
-	jQuery("#clsubmit").click(function(){ 
-
-		e.preventDefault();
-
-		var  jqXHR = jQuery.post(
-					allAjax.ajaxurl,
-					{
-						action: 'send_mail',		
-						nonce: allAjax.nonce,
-						formsubject: jQuery("#formsubject").val(),
-					}
-					
-		);
-				
-				
-		jqXHR.done(function (responce) {  //Всегда при удачной отправке переход для страницу благодарности
-					document.location.href = 'https://osagoprofi.su/stranica-blagodarnosti';	
-		});
-				
-		jqXHR.fail(function (responce) {
-					jQuery('#messgeModal #lineMsg').html("Произошла ошибка. Попробуйте позднее.");
-					jQuery('#messgeModal').arcticmodal();
-		});
-	});
+// Открытие модального окна
+$(".popup-quest").on('click', function (e) {
+	e.preventDefault();
+	jQuery(".windows_form h2").html(jQuery(this).data("winheader"));
+	jQuery(".windows_form .subtitle").html(jQuery(this).data("winsubheader"));
+	jQuery("#question").arcticmodal();
 });
+
+//Валидация + Отправщик
+$('.newButton').click(function (e) {
+
+	e.preventDefault();
+	var name = $("#form-question-name").val();
+	var tel = $("#form-question-tel").val();
+
+	if (jQuery("#form-question-tel").val() == "") {
+		jQuery("#form-question-tel").css("border", "1px solid red");
+		return;
+	}
+
+	// if (jQuery("#sig-inp-e").val() == ""){
+	// 	jQuery("#sig-inp-e").css("border","1px solid red");
+	// 	return;
+	// }
+
+	else {
+		var jqXHR = jQuery.post(
+			allAjax.ajaxurl,
+			{
+				action: 'sendphone',
+				nonce: allAjax.nonce,
+				name: name,
+				tel: tel,
+			}
+		);
+
+		jqXHR.done(function (responce) {
+			jQuery(".headen_form_blk").hide();
+			jQuery('.SendetMsg').show();
+		});
+
+		jqXHR.fail(function (responce) {
+			alert("Произошла ошибка. Попробуйте позднее.");
+		});
+
+	}
+});
+
+

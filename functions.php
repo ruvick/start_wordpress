@@ -1,7 +1,7 @@
 <?php
 
-define("COMPANY_NAME", "<Вписываем имя компании>");
-define("MAIL_RESEND", "<Вписываем почтовый ящик который подставляется в шапку письма>");
+define("COMPANY_NAME", "АВТОМОБИЛЬНЫЕ СИДЕНЬЯ");
+define("MAIL_RESEND", "noreply@ultrakresla.ru");
 
 //----Подключене carbon fields
 //----Инструкции по подключению полей см. в комментариях themes-fields.php
@@ -303,5 +303,36 @@ add_action( 'wp_enqueue_scripts', 'my_assets' );
 // }
 
 
+// Отправка формы из модального окна
+add_action( 'wp_ajax_sendphone', 'sendphone' );
+add_action( 'wp_ajax_nopriv_sendphone', 'sendphone' );
+
+  function sendphone() {
+    if ( empty( $_REQUEST['nonce'] ) ) {
+      wp_die( '0' );
+    }
+    
+    if ( check_ajax_referer( 'NEHERTUTLAZIT', 'nonce', false ) ) {
+      
+      $headers = array(
+        'From: Сайт '.COMPANY_NAME.' <'.MAIL_RESEND.'>', 
+        'content-type: text/html',
+      );
+    
+      add_filter('wp_mail_content_type', create_function('', 'return "text/html";'));
+       if (wp_mail(carbon_get_theme_option( 'as_email_send' ), 'Заказ звонка', '<strong>Имя:</strong> '.$_REQUEST["name"]. ' <br/> <strong>Телефон:</strong> '.$_REQUEST["tel"], $headers))
+        wp_die("<span style = 'color:green;'>Мы свяжемся с Вами в ближайшее время.</span>");
+      else wp_die("<span style = 'color:red;'>Сервис недоступен попробуйте позднее.</span>"); 
+      
+    } else {
+      wp_die( 'НО-НО-НО!', '', 403 );
+    }
+  }
+
+
+
+
+
+	
 
 ?>
