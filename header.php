@@ -20,6 +20,14 @@
 
 </head>
 <body>
+<!-- Скрипт корзины, отправка -->
+<script>  
+    let main_page = "<?echo get_bloginfo("url"); ?>";
+    let kabinet_page = "<?echo get_the_permalink(93); ?>";
+    let bascet_page = "<?echo get_the_permalink(53); ?>";
+    let thencs_page = "<?echo get_the_permalink(56); ?>";
+    let nophoto_page = "<?echo get_bloginfo("template_url");?>/img/no-photo.jpg";
+</script> 
   <div class="wrapper">  
     <!-- Подключение  модальных окон-->
     <? include "modal-win.php";?>
