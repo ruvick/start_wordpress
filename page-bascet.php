@@ -15,7 +15,9 @@ get_header(); ?>
   data-lnk = "<? echo  get_the_permalink(get_the_ID());?>"
   data-name = "<? echo  get_the_title();?>"
   data-count = "1"
-  data-picture = "<?php echo wp_get_attachment_image_src($item['gal_img'], 'large')[0];?>">
+  data-picture = "<?php echo wp_get_attachment_image_src($item['gal_img'], 'large')[0];?>"
+
+  data-picture = "<?php  $imgTm = get_the_post_thumbnail_url( get_the_ID(), "tominiatyre" ); echo empty($imgTm)?get_bloginfo("template_url")."/img/no-photo.jpg":$imgTm; ?>">
     Добавить в корзину
 </button> 
 
