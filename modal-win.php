@@ -17,7 +17,7 @@
 						<input type="text" name="name" placeholder="Имя" id="form-callback-name" class="popup__form-input input">
 						<input type="tel" name="tel" placeholder="Телефон*" id="form-callback-tel" class="popup__form-input input">
 						<input type="text" name="email" placeholder="Email" id="form-callback-email" class="popup__form-input input">
-						<button class="popup__form-btn btn">Заказать</button>
+						<button class="popup__form-btn newButton btn">Заказать</button>
 					</form> 
 					</div>
 				</div>
