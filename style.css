@@ -262,7 +262,8 @@ filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><fi
   padding: 10px 0;
   text-align: center;
   font-size: 18px;
-  font-weight: 600; }
+  font-weight: 600; 
+  margin-top: 80px; }
 .SendetMsg:before{
   content: "";
   width: 100%;
