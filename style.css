@@ -188,7 +188,7 @@ filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><fi
   -webkit-transform: scale(1);
   -ms-transform: scale(1);
   transform: scale(1);
-  border-radius: 25px; }
+  border-radius: 3px; }
 .popup__content {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -229,22 +229,35 @@ filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><fi
   right: 15px;
   cursor: pointer;
   z-index: 30;
-  background: url("img/icons/close.svg") 0 0 no-repeat; }
+  background: url("img/close.svg") 0 0 no-repeat; }
 .popup__form-block {
   width: 100%;
   padding: 35px; }
 .popup__form-block h2 {
-  margin-bottom: 65px; }
+  margin: 0 0 20px 0; }
+.popup__form-block p {
+  margin: 0 0 30px 0; }
 .popup__form-input {
-  height: 46px;
-  background: #F6F8F1;
-  border: 1px solid #737373;
+  width: 100%;
+  min-height: 45px;
+  padding: 0 10px;
+  border: 1px solid lightgray;
+  border-radius: 3px;
   margin-bottom: 25px; }
 .popup__form-btn {
-  min-width: 160px;
-  font-size: 18px; }
+  display: inline-block;
+  padding: 12px 28px;
+  font-size: 18px;
+  font-family: Lato-Light, sans-serif;
+  text-transform: uppercase;
+  color: #d3820f;
+  border: 1px solid #d3820f; 
+  cursor: pointer; }
+.popup__form-btn:hover {
+  color: #fff;
+  background-color: #d3820f; }
 .popup__item img {
-  width: 45%; }
+  width: 40%; }
 .SendetMsg {
   padding: 10px 0;
   text-align: center;
