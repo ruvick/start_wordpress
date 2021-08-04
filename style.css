@@ -6,7 +6,19 @@ Author URI:
 Version: 1.0.1  
 */ 
 
+/* Оформление дефолтных стилей */
+.content ul {
+  margin-bottom: 35px;
+}
 
+.content ul li {
+  margin-bottom: 15px;
+}
+
+.content ul li:last-child {
+  margin-bottom: 0;
+}
+/* =========================== */
 
 /* Оформление корзины */
 .bascet_page_table {
