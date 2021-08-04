@@ -144,7 +144,10 @@ filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><fi
 -webkit-filter: grayscale(100%); }*/
 
 /*Убираем лишние элементы с карты*/
-.ymaps-2-1-77-gotoymaps__container, 
+.ymaps-2-1-79-copyright, 
+.ymaps-2-1-79-copyright_logo_no,
+.ymaps-2-1-79-map-copyrights-promo,
+.ymaps-2-1-77-gotoymaps__container,  
 .ymaps-2-1-77-gototech, 
 .ymaps-2-1-77-copyright__content,
 .ymaps-2-1-78-copyright__wrap,
