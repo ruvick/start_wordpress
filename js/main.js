@@ -94,6 +94,36 @@ function add_tocart(elem, countElem) {
 }
 //------------------------------------------------------------------------------------------------------------
 
+// Отправка на печать -------------------------------------------------------------------------------------------------------------
+function printit() {
+	if (window.print) {
+		window.print();
+	} else {
+		var WebBrowser =
+			'<OBJECT ID="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></OBJECT>';
+		document.body.insertAdjacentHTML("beforeEnd", WebBrowser);
+		WebBrowser1.ExecWB(6, 2); //Use a 1 vs. a 2 for a prompting dialog box WebBrowser1.outerHTML = "";
+	}
+}
+
+// Отправка на генерацию PDF -------------------------------------------------------------------------------------------------------------
+function generatePDF() {
+	const element = document.getElementById('body');
+	const opt = {
+		margin: 1,
+		filename: 'file.pdf',
+		image: { type: 'jpeg', quality: 0.98 },
+		html2canvas: { scale: 1 },
+		jsPDF: { unit: 'in', format: 'a2', orientation: 'portrait' }
+	};
+
+	// New Promise-based usage:
+	html2pdf().set(opt).from(element).save();
+}
+
+{/* <a href="#" class="card-wrap-properties-links-link" onclick="generatePDF();">Скачать страницу в PDF</p></a> */ }
+// ----------------------------------------------------------------------------------------------------------------------------------------
+
 //BodyLock для Popup на JS
 function body_lock(delay) {
 	let body = document.querySelector("body");
