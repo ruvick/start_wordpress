@@ -249,65 +249,54 @@ document.addEventListener('keydown', function (e) {
 		popup_close();
 	}
 });
+
+
+// Отправка формы
+document.addEventListener("DOMContentLoaded", () => {
+let unisend_form = document.getElementsByClassName("universal_send_form")[0]; 
+let unisend_btn = unisend_form.getElementsByClassName("u_send")[0];
+if (unisend_btn !== undefined) 
+	unisend_btn.onclick = (e) => {
+		let error = form_validate(unisend_form);
+ 		if (error == 0) {
+			e.stopPropagation()
+			console.log(unisend_form.getElementsByClassName("form_msg")[0])
+
+			var xhr = new XMLHttpRequest()
+
+			var params = new URLSearchParams()
+			params.append('action', 'sendphone')
+			params.append('nonce', allAjax.nonce)
+			params.append('name', unisend_form.getElementsByTagName("name")[0])
+			params.append('tel', unisend_form.getElementsByTagName("tel")[0])
+
+			xhr.onload = function(e) {
+				unisend_form.getElementsByClassName("form__line")[0].style.display="none";
+				unisend_form.getElementsByClassName("popup__policy")[0].style.display="none";
+				unisend_form.getElementsByClassName("popup__form-btn")[0].style.display="none";
+				unisend_form.getElementsByClassName("form_msg")[0].style.display="block";
+			}
+
+			xhr.onerror = function () { 
+				error(xhr, xhr.status); 
+			};
+
+			xhr.open('POST', allAjax.ajaxurl, true);
+			xhr.send(params);
+	 } else {
+				let form_error = unisend_form.querySelectorAll('._error');
+				if (form_error && unisend_form.classList.contains('_goto-error')) {
+					_goto(form_error[0], 1000, 50);
+				}
+				e.preventDefault();
+			}
+	} 
+});
+
 // Файлы Java Script End -----------------------------------------------------------------------------------------------------
 
 $ = jQuery;
 
 // Файлы jQuery---------------------------------------------------------------------------------------------------------------
 
-// Маска телефона
-var inputmask_phone = { "mask": "+9(999)999-99-99" };
-jQuery("input[type=tel]").inputmask(inputmask_phone);
-
-
-// Открытие модального окна
-$(".popup-quest").on('click', function (e) {
-	e.preventDefault();
-	jQuery(".windows_form h2").html(jQuery(this).data("winheader"));
-	jQuery(".windows_form .subtitle").html(jQuery(this).data("winsubheader"));
-	jQuery("#question").arcticmodal();
-});
-
-
-//Валидация + Отправщик
-$('.newButton').click(function (e) {
-
-	e.preventDefault();
-	const name = $("#form-callback-name").val();
-	const tel = $("#form-callback-tel").val();
-	const email = $("#form-callback-email").val();
-
-	if (jQuery("#form-callback-tel").val() == "") {
-		jQuery("#form-callback-tel").css("border", "1px solid red");
-		return;
-	}
-
-	// if (jQuery("#sig-inp-e").val() == ""){
-	// 	jQuery("#sig-inp-e").css("border","1px solid red");
-	// 	return;
-	// }
-
-	else {
-		var jqXHR = jQuery.post(
-			allAjax.ajaxurl,
-			{
-				action: 'sendphone',
-				nonce: allAjax.nonce,
-				name: name,
-				tel: tel,
-				email: email,
-			}
-		);
-
-		jqXHR.done(function (responce) {
-			jQuery(".headen_form_blk").hide();
-			jQuery('.SendetMsg').show();
-		});
-
-		jqXHR.fail(function (responce) {
-			alert("Произошла ошибка. Попробуйте позднее.");
-		});
-
-	}
-});
 
