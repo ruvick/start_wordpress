@@ -4,7 +4,7 @@
 <div class="popup popup_callback">
 	<div class="popup__content">
 		<div class="popup__body">
-			<div class="popup__close"></div>
+			<div class="popup__close" aria-label="Закрыть модальное окно"></div>
 			<div class="popup__item d-flex">
 				<div class="popup__img">
 					<picture>
