@@ -13,7 +13,7 @@ get_header(); ?>
 <main id="primary" class="page site-main"> 
 
 	<section class="content"> 
-		<div class="container">
+		<div class="_container">
 
 		<?php get_template_part('template-parts/benefit-slider');?>
 

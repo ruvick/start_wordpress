@@ -149,6 +149,9 @@ Vue.component('bascetform', {
 
             this.bascet = JSON.parse(localStorage.getItem("cart"));
 
+            this.bascetCount = localStorage.getItem("cartcount");
+            this.bascetSumm = localStorage.getItem("cartsumm");  
+
             var params = new URLSearchParams();
             params.append('action', 'send_cart');
             params.append('nonce', allAjax.nonce);
@@ -156,6 +159,7 @@ Vue.component('bascetform', {
             params.append('bascetcount', this.bascetCount);
             params.append('bascetsumm', this.bascetSumm);
             params.append('name', this.name);
+            params.append('inn', localStorage.getItem("inn"));
             params.append('mail', this.mail);
             params.append('phone', this.phone);
             params.append('adres', this.adres);

@@ -11,8 +11,8 @@
 						<source srcset="<?php echo get_template_directory_uri(); ?>/img/popup.webp" type="image/webp"><img src="<?php echo get_template_directory_uri(); ?>/img/popup.jpg?_v=1632757662937" alt="">
 					</picture>
 				</div>
-				<div class="popup__form-block">
-					<h2>Заказать звонок</h2>
+				<div class="popup__form-block"> 
+					<h2>Заказать звонок</h2> 
 					
 					<div class="headen_form_blk">
 						<p class="popup__notific">Оставьте заявку и мы свяжемся с Вами в течении 15 минут</p>

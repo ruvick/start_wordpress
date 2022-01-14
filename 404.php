@@ -6,7 +6,7 @@
 	<main id="primary" class="page site-main">
 
 	<div class = "content contentInPage centrElem">	 
-		<div class="container">
+		<div class="_container">
 			<h1 class = "h404">404</h1>
 				Запрашиваемая страница не была найдена
 		</div>

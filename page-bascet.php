@@ -9,8 +9,8 @@ get_header(); ?>
 <!-- События на кнопке -->
 <button class="btn btn__to-card" id = "btn__to-card" onclick = "add_tocart(this, 0); return false;"
   data-price = "<?echo carbon_get_post_meta(get_the_ID(),"offer_price"); ?>"
-	data-sku = "<? echo carbon_get_post_meta(get_the_ID(),"offer_sku")?>"
-	data-size = ""
+  data-sku = "<? echo carbon_get_post_meta(get_the_ID(),"offer_sku")?>"
+  data-size = ""
   data-oldprice = "<? echo carbon_get_post_meta(get_the_ID(),"offer_old_price")?>"
   data-lnk = "<? echo  get_the_permalink(get_the_ID());?>"
   data-name = "<? echo  get_the_title();?>"
@@ -26,7 +26,7 @@ get_header(); ?>
 <main class="main page">	
 
 <section class = "content">
-		<div class="container">
+		<div class="_container">
 
 			<div class="bread-crumbs-box">
 				<?php
@@ -145,7 +145,7 @@ get_header(); ?>
         </template>
 
         <section>   
-            <div class="container">
+            <div class="_container">
                 <div id = "bascet_vue">
 
                     <div class = "bascet_content" >

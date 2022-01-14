@@ -10,6 +10,17 @@ function getCookie(name) {
 }
 
 
+function inBascetCounting() {
+	cart = JSON.parse(localStorage.getItem("cart"));
+	if (cart == null) cart = [];
+	for (let i = 0; i < cart.length; i++) {
+		let element = document.getElementById('bcounter_' + cart[i].sku);
+		if (element != null)
+			element.innerHTML = "(" + cart[i].count + ")";
+	}
+}
+
+
 function number_format() {
 	let elements = document.querySelectorAll('.price_formator');
 	for (let elem of elements) {
@@ -18,15 +29,11 @@ function number_format() {
 	}
 }
 
-function set_size(sizeName) {
-	let btn = document.getElementById('btn__to-card');
-	btn.dataset.size = sizeName;
-	console.log(sizeName);
-}
 
 document.addEventListener("DOMContentLoaded", () => {
 	number_format();
 	cart_recalc();
+	inBascetCounting();
 });
 
 //--- Корзина -------------------------------------------------------------------------------------------------------------
@@ -56,7 +63,6 @@ function cart_recalc() {
 }
 
 function add_tocart(elem, countElem) {
-
 
 	let cartElem = {
 		sku: elem.dataset.sku,
@@ -124,7 +130,7 @@ function generatePDF() {
 {/* <a href="#" class="card-wrap-properties-links-link" onclick="generatePDF();">Скачать страницу в PDF</p></a> */ }
 // ----------------------------------------------------------------------------------------------------------------------------------------
 
-//BodyLock для Popup на JS
+//BodyLock
 function body_lock(delay) {
 	let body = document.querySelector("body");
 	if (body.classList.contains('lock')) {
@@ -169,9 +175,9 @@ function body_lock_add(delay) {
 		}, delay);
 	}
 }
+//=================
 
-// Popup JS
-let unlock = true;
+//Popups
 let popup_link = document.querySelectorAll('._popup-link');
 let popups = document.querySelectorAll('.popup');
 for (let index = 0; index < popup_link.length; index++) {
@@ -251,48 +257,384 @@ document.addEventListener('keydown', function (e) {
 });
 
 
-// Отправка формы
+// Отправщик ----------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
-let unisend_form = document.getElementsByClassName("universal_send_form")[0]; 
-let unisend_btn = unisend_form.getElementsByClassName("u_send")[0];
-if (unisend_btn !== undefined) 
-	unisend_btn.onclick = (e) => {
-		let error = form_validate(unisend_form);
- 		if (error == 0) {
-			e.stopPropagation()
-			console.log(unisend_form.getElementsByClassName("form_msg")[0])
+	let popup_form = document.getElementsByClassName("popup__form-block")[0];
+	let unisend_form = document.getElementsByClassName("universal_send_form")[0];
+	let unisend_btn = unisend_form.getElementsByClassName("u_send")[0];
+	if (unisend_btn !== undefined)
+		unisend_btn.onclick = (e) => {
+			let error = form_validate(unisend_form);
+			if (error == 0) {
+				e.stopPropagation()
+				console.log(unisend_form.getElementsByClassName("form_msg")[0])
 
-			var xhr = new XMLHttpRequest()
+				var xhr = new XMLHttpRequest()
 
-			var params = new URLSearchParams()
-			params.append('action', 'sendphone')
-			params.append('nonce', allAjax.nonce)
-			params.append('name', unisend_form.getElementsByTagName("name")[0])
-			params.append('tel', unisend_form.getElementsByTagName("tel")[0])
+				var params = new URLSearchParams()
+				params.append('action', 'sendphone')
+				params.append('nonce', allAjax.nonce)
+				params.append('name', unisend_form.getElementsByTagName("name")[0])
+				params.append('tel', unisend_form.getElementsByTagName("tel")[0])
 
-			xhr.onload = function(e) {
-				unisend_form.getElementsByClassName("form__line")[0].style.display="none";
-				unisend_form.getElementsByClassName("popup__policy")[0].style.display="none";
-				unisend_form.getElementsByClassName("popup__form-btn")[0].style.display="none";
-				unisend_form.getElementsByClassName("form_msg")[0].style.display="block";
-			}
+				xhr.onload = function (e) {
+					popup_form.getElementsByClassName("headen_form_blk")[0].style.display = "none";
+					// unisend_form.getElementsByClassName("popup__policy")[0].style.display="none";
+					// unisend_form.getElementsByClassName("popup__form-btn")[0].style.display="none";
+					popup_form.getElementsByClassName("SendetMsg")[0].style.display = "block";
+					// window.location.href = "https://forestsea.ru/stranica-blagodarnosti/";
+				}
 
-			xhr.onerror = function () { 
-				error(xhr, xhr.status); 
-			};
+				xhr.onerror = function () {
+					error(xhr, xhr.status);
+				};
 
-			xhr.open('POST', allAjax.ajaxurl, true);
-			xhr.send(params);
-	 } else {
+				xhr.open('POST', allAjax.ajaxurl, true);
+				xhr.send(params);
+			} else {
 				let form_error = unisend_form.querySelectorAll('._error');
 				if (form_error && unisend_form.classList.contains('_goto-error')) {
 					_goto(form_error[0], 1000, 50);
 				}
 				e.preventDefault();
 			}
-	} 
+		}
 });
 
+
+function email_test(input) {
+	return !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(input.value);
+}
+
+
+var ua = window.navigator.userAgent;
+var msie = ua.indexOf("MSIE ");
+var isMobile = { Android: function () { return navigator.userAgent.match(/Android/i); }, BlackBerry: function () { return navigator.userAgent.match(/BlackBerry/i); }, iOS: function () { return navigator.userAgent.match(/iPhone|iPad|iPod/i); }, Opera: function () { return navigator.userAgent.match(/Opera Mini/i); }, Windows: function () { return navigator.userAgent.match(/IEMobile/i); }, any: function () { return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()); } };
+function isIE() {
+	ua = navigator.userAgent;
+	var is_ie = ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
+	return is_ie;
+}
+if (isIE()) {
+	document.querySelector('html').classList.add('ie');
+}
+if (isMobile.any()) {
+	document.querySelector('html').classList.add('_touch');
+}
+
+// Получить цифры из строки
+//parseInt(itemContactpagePhone.replace(/[^\d]/g, ''))
+
+function testWebP(callback) {
+	var webP = new Image();
+	webP.onload = webP.onerror = function () {
+		callback(webP.height == 2);
+	};
+	webP.src = "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA";
+}
+testWebP(function (support) {
+	if (support === true) {
+		document.querySelector('html').classList.add('_webp');
+	} else {
+		document.querySelector('html').classList.add('_no-webp');
+	}
+});
+
+
+window.addEventListener("load", function () {
+	if (document.querySelector('.wrapper')) {
+		setTimeout(function () {
+			document.querySelector('.wrapper').classList.add('loaded');
+		}, 0);
+	}
+});
+
+let unlock = true;
+//=================
+
+//DigiFormat
+function digi(str) {
+	var r = str.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+	return r;
+}
+//=================
+
+//Wrap
+function _wrap(el, wrapper) {
+	el.parentNode.insertBefore(wrapper, el);
+	wrapper.appendChild(el);
+}
+//========================================
+
+//RemoveClasses
+function _removeClasses(el, class_name) {
+	for (var i = 0; i < el.length; i++) {
+		el[i].classList.remove(class_name);
+	}
+}
+//========================================
+
+//IsHidden
+function _is_hidden(el) {
+	return (el.offsetParent === null)
+}
+
+//Полифилы
+(function () {
+	// проверяем поддержку
+	if (!Element.prototype.closest) {
+		// реализуем
+		Element.prototype.closest = function (css) {
+			var node = this;
+			while (node) {
+				if (node.matches(css)) return node;
+				else node = node.parentElement;
+			}
+			return null;
+		};
+	}
+})();
+(function () {
+	// проверяем поддержку
+	if (!Element.prototype.matches) {
+		// определяем свойство
+		Element.prototype.matches = Element.prototype.matchesSelector ||
+			Element.prototype.webkitMatchesSelector ||
+			Element.prototype.mozMatchesSelector ||
+			Element.prototype.msMatchesSelector;
+	}
+})();
+// ------------------------------------------------------------------
+
+// Валидация --------------------------------------------------------
+function form_validate(form) {
+	let error = 0;
+	let form_req = form.querySelectorAll('._req');
+	if (form_req.length > 0) {
+		for (let index = 0; index < form_req.length; index++) {
+			const el = form_req[index];
+			if (!_is_hidden(el)) {
+				error += form_validate_input(el);
+			}
+		}
+	}
+	return error;
+}
+function form_validate_input(input) {
+	let error = 0;
+	let input_g_value = input.getAttribute('data-value');
+
+	if (input.getAttribute("name") == "email" || input.classList.contains("_email")) {
+		if (input.value != input_g_value) {
+			let em = input.value.replace(" ", "");
+			input.value = em;
+		}
+		if (email_test(input) || input.value == input_g_value) {
+			form_add_error(input);
+			error++;
+		} else {
+			form_remove_error(input);
+		}
+	} else if (input.getAttribute("type") == "checkbox" && input.checked == false) {
+		form_add_error(input);
+		error++;
+	} else {
+		if (input.value == '' || input.value == input_g_value) {
+			form_add_error(input);
+			error++;
+		} else {
+			form_remove_error(input);
+		}
+	}
+	return error;
+}
+function form_add_error(input) {
+	input.classList.add('_error');
+	input.parentElement.classList.add('_error');
+
+	let input_error = input.parentElement.querySelector('.form__error');
+	if (input_error) {
+		input.parentElement.removeChild(input_error);
+	}
+	let input_error_text = input.getAttribute('data-error');
+	if (input_error_text && input_error_text != '') {
+		input.parentElement.insertAdjacentHTML('beforeend', '<div class="form__error">' + input_error_text + '</div>');
+	}
+}
+function form_remove_error(input) {
+	input.classList.remove('_error');
+	input.parentElement.classList.remove('_error');
+
+	let input_error = input.parentElement.querySelector('.form__error');
+	if (input_error) {
+		input.parentElement.removeChild(input_error);
+	}
+}
+function form_clean(form) {
+	let inputs = form.querySelectorAll('input,textarea');
+	for (let index = 0; index < inputs.length; index++) {
+		const el = inputs[index];
+		el.parentElement.classList.remove('_focus');
+		el.classList.remove('_focus');
+		el.value = el.getAttribute('data-value');
+	}
+	let checkboxes = form.querySelectorAll('.checkbox__input');
+	if (checkboxes.length > 0) {
+		for (let index = 0; index < checkboxes.length; index++) {
+			const checkbox = checkboxes[index];
+			checkbox.checked = false;
+		}
+	}
+	let selects = form.querySelectorAll('select');
+	if (selects.length > 0) {
+		for (let index = 0; index < selects.length; index++) {
+			const select = selects[index];
+			const select_default_value = select.getAttribute('data-default');
+			select.value = select_default_value;
+			select_item(select);
+		}
+	}
+}
+
+//viewPass
+let viewPass = document.querySelectorAll('._viewpass');
+for (let index = 0; index < viewPass.length; index++) {
+	const element = viewPass[index];
+	element.addEventListener("click", function (e) {
+		if (element.classList.contains('_active')) {
+			element.parentElement.querySelector('input').setAttribute("type", "password");
+		} else {
+			element.parentElement.querySelector('input').setAttribute("type", "text");
+		}
+		element.classList.toggle('_active');
+	});
+}
+
+//Placeholers
+let inputs = document.querySelectorAll('input[data-value],textarea[data-value]');
+inputs_init(inputs);
+
+function inputs_init(inputs) {
+	if (inputs.length > 0) {
+		for (let index = 0; index < inputs.length; index++) {
+			const input = inputs[index];
+			const input_g_value = input.getAttribute('data-value');
+			input_placeholder_add(input);
+			if (input.value != '' && input.value != input_g_value) {
+				input_focus_add(input);
+			}
+			input.addEventListener('focus', function (e) {
+				if (input.value == input_g_value) {
+					input_focus_add(input);
+					input.value = '';
+				}
+				if (input.getAttribute('data-type') === "pass") {
+					if (input.parentElement.querySelector('._viewpass')) {
+						if (!input.parentElement.querySelector('._viewpass').classList.contains('_active')) {
+							input.setAttribute('type', 'password');
+						}
+					} else {
+						input.setAttribute('type', 'password');
+					}
+				}
+				if (input.classList.contains('_date')) {
+					/*
+					input.classList.add('_mask');
+					Inputmask("99.99.9999", {
+						//"placeholder": '',
+						clearIncomplete: true,
+						clearMaskOnLostFocus: true,
+						onincomplete: function () {
+							input_clear_mask(input, input_g_value);
+						}
+					}).mask(input);
+					*/
+				}
+				if (input.classList.contains('_phone')) {
+					//'+7(999) 999 9999'
+					//'+38(999) 999 9999'
+					//'+375(99)999-99-99'
+					input.classList.add('_mask');
+					Inputmask("+7(999) 999 9999", {
+						//"placeholder": '',
+						clearIncomplete: true,
+						clearMaskOnLostFocus: true,
+						onincomplete: function () {
+							input_clear_mask(input, input_g_value);
+						}
+					}).mask(input);
+				}
+				if (input.classList.contains('_digital')) {
+					input.classList.add('_mask');
+					Inputmask("9{1,}", {
+						"placeholder": '',
+						clearIncomplete: true,
+						clearMaskOnLostFocus: true,
+						onincomplete: function () {
+							input_clear_mask(input, input_g_value);
+						}
+					}).mask(input);
+				}
+				form_remove_error(input);
+			});
+			input.addEventListener('blur', function (e) {
+				if (input.value == '') {
+					input.value = input_g_value;
+					input_focus_remove(input);
+					if (input.classList.contains('_mask')) {
+						input_clear_mask(input, input_g_value);
+					}
+					if (input.getAttribute('data-type') === "pass") {
+						input.setAttribute('type', 'text');
+					}
+				}
+			});
+			if (input.classList.contains('_date')) {
+				const calendarItem = datepicker(input, {
+					customDays: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
+					customMonths: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+					overlayButton: 'Применить',
+					overlayPlaceholder: 'Год (4 цифры)',
+					startDay: 1,
+					formatter: (input, date, instance) => {
+						const value = date.toLocaleDateString()
+						input.value = value
+					},
+					onSelect: function (input, instance, date) {
+						input_focus_add(input.el);
+					}
+				});
+				const dataFrom = input.getAttribute('data-from');
+				const dataTo = input.getAttribute('data-to');
+				if (dataFrom) {
+					calendarItem.setMin(new Date(dataFrom));
+				}
+				if (dataTo) {
+					calendarItem.setMax(new Date(dataTo));
+				}
+			}
+		}
+	}
+}
+function input_placeholder_add(input) {
+	const input_g_value = input.getAttribute('data-value');
+	if (input.value == '' && input_g_value != '') {
+		input.value = input_g_value;
+	}
+}
+function input_focus_add(input) {
+	input.classList.add('_focus');
+	input.parentElement.classList.add('_focus');
+}
+function input_focus_remove(input) {
+	input.classList.remove('_focus');
+	input.parentElement.classList.remove('_focus');
+}
+function input_clear_mask(input, input_g_value) {
+	input.inputmask.remove();
+	input.value = input_g_value;
+	input_focus_remove(input);
+}
 // Файлы Java Script End -----------------------------------------------------------------------------------------------------
 
 $ = jQuery;

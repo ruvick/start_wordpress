@@ -5,7 +5,7 @@
 <main class="page">
 
 	<section class="category">  
-		<div class="container">
+		<div class="_container">
 
 			<!-- Хлебные крошки -->
 			<?php

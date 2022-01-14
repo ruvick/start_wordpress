@@ -1,6 +1,6 @@
 <?php
 
-define("COMPANY_NAME", "АВТОМОБИЛЬНЫЕ СИДЕНЬЯ");
+define("COMPANY_NAME", "Новый сайт");
 define("MAIL_RESEND", "noreply@ultrakresla.ru");
 
 //----Подключене carbon fields
@@ -10,7 +10,7 @@ include "carbon-fields/carbon-fields-plugin.php";
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
-add_action('carbon_fields_register_fields', 'crb_attach_theme_options');
+add_action('carbon_fields_register_fields', 'crb_attach_theme_options'); 
 function crb_attach_theme_options()
 {
 	require_once __DIR__ . "/themes-fields.php";
@@ -79,15 +79,15 @@ function filter_nav_menu_link_attributes($atts, $item, $args, $depth)
 
 
 // Добавляет иконку к ссылкам меню, прикрепленное к области меню menu_main
-function change_menu_item_args($args)
-{
-	if ($args->theme_location == 'menu_main') {
-		$args->link_after = '<img src="' . get_template_directory_uri() . '/img/home/header-menu-arrow-down.svg" alt="" class="header-bottom-wrap-menu-item-down__img">';
-	}
+// function change_menu_item_args($args)
+// {
+// 	if ($args->theme_location == 'menu_main') {
+// 		$args->link_after = '<img src="' . get_template_directory_uri() . '/img/home/header-menu-arrow-down.svg" alt="" class="header-bottom-wrap-menu-item-down__img">';
+// 	}
 
-	return $args;
-}
-add_filter('nav_menu_item_args', 'change_menu_item_args');
+// 	return $args;
+// }
+// add_filter('nav_menu_item_args', 'change_menu_item_args');
 
 
 // Добавляем класс к submenu, прикрепленное к области меню menu_main
@@ -156,7 +156,7 @@ function my_assets()
 
 	// Подключение скриптов
 
-	wp_enqueue_script('jquery');
+	wp_enqueue_script('jquery'); 
 
 	// wp_enqueue_script('amodal', get_template_directory_uri() . '/js/jquery.arcticmodal-0.3.min.js', array(), $scrypt_version, true); //Модальные окна
 	// wp_enqueue_script('mask', get_template_directory_uri() . '/js/jquery.inputmask.bundle.js', array(), $scrypt_version, true); //маска для инпутов
@@ -168,6 +168,19 @@ function my_assets()
 
 	wp_enqueue_script('main', get_template_directory_uri() . '/js/main.js', array(), $scrypt_version, true); // Подключение основного скрипта в самом конце
 
+	if ( is_page(17)) // Корзина
+	{
+		wp_enqueue_script( 'vue', get_template_directory_uri().'/js/vue.js', array(), $scrypt_version, true);
+		wp_enqueue_script( 'axios', get_template_directory_uri().'/js/axios.min.js', array(), $scrypt_version, true);
+		wp_enqueue_script( 'bascet', get_template_directory_uri().'/js/bascet.js', array(), $scrypt_version, true); 
+	}
+
+	if ( is_page(219)) // Личный кабинет
+	{
+		wp_enqueue_script( 'vue', get_template_directory_uri().'/js/vue.js', array(), $scrypt_version, true);
+		wp_enqueue_script( 'axios', get_template_directory_uri().'/js/axios.min.js', array(), $scrypt_version, true);
+		wp_enqueue_script( 'cabinet', get_template_directory_uri().'/js/cabinet.js', array(), $scrypt_version, true);
+	}
 
 	wp_localize_script('main', 'allAjax', array(
 		'ajaxurl' => admin_url('admin-ajax.php'),
@@ -402,33 +415,31 @@ function sendphone()
 }
 
 
-// Отправка корзины
-function tovarTo1c($bascetElem)
-{
-	return
-		"<Товар>\n\r" .
-		"<Ид>" . $bascetElem->sku1c . "</Ид>\n\r" .
-		'<Наименование>' . $bascetElem->name . '</Наименование>\n\r' .
-		'<БазоваяЕдиница Код="796" НаименованиеПолное="Штука" МеждународноеСокращение="PCE">шт</БазоваяЕдиница>\n\r' .
-		"<ЦенаЗаЕдиницу>" . $bascetElem->price . "</ЦенаЗаЕдиницу>\n\r" .
-		"<Количество>" . $bascetElem->count . "</Количество>\n\r" .
-		"<Сумма>" . $bascetElem->subtotal . "</Сумма>\n\r" .
-		"<ЗначенияРеквизитов>\n\r" .
-		"<ЗначениеРеквизита>\n\r" .
-		"<Наименование>ВидНоменклатуры</Наименование>\n\r" .
-		"<Значение>Товар</Значение>\n\r" .
-		"</ЗначениеРеквизита>\n\r" .
+// Отправка корзины ================================================
+function tovarTo1c($bascetElem) {
+	return 
+	"<Товар>\n\r".
+		"<Ид>".$bascetElem->sku1c."</Ид>\n\r".
+		'<Наименование>'.$bascetElem->name.'</Наименование>\n\r'.
+		'<БазоваяЕдиница Код="796" НаименованиеПолное="Штука" МеждународноеСокращение="PCE">шт</БазоваяЕдиница>\n\r'.
+		"<ЦенаЗаЕдиницу>".$bascetElem->price."</ЦенаЗаЕдиницу>\n\r".
+		"<Количество>".$bascetElem->count."</Количество>\n\r".
+		"<Сумма>".$bascetElem->subtotal."</Сумма>\n\r".
+		"<ЗначенияРеквизитов>\n\r".
+			"<ЗначениеРеквизита>\n\r".
+				"<Наименование>ВидНоменклатуры</Наименование>\n\r".
+				"<Значение>Товар</Значение>\n\r".
+			"</ЗначениеРеквизита>\n\r".
+			
+			"<ЗначениеРеквизита>\n\r".
+				"<Наименование>ТипНоменклатуры</Наименование>\n\r".
+				"<Значение>Товар</Значение>\n\r".
+			"</ЗначениеРеквизита>\n\r".
+		"</ЗначенияРеквизитов>\n\r".
+	"</Товар>\n\r";
+}	
 
-		"<ЗначениеРеквизита>\n\r" .
-		"<Наименование>ТипНоменклатуры</Наименование>\n\r" .
-		"<Значение>Товар</Значение>\n\r" .
-		"</ЗначениеРеквизита>\n\r" .
-		"</ЗначенияРеквизитов>\n\r" .
-		"</Товар>\n\r";
-}
-
-function sendToFtp($fileAdr, $zak_number)
-{
+function sendToFtp($fileAdr, $zak_number) {
 	$ftp_server = "81.177.141.133";
 	$ftp_user_name = "asmi046_1s";
 	$ftp_user_pass = "!#(yTY)uz9d8";
@@ -439,44 +450,43 @@ function sendToFtp($fileAdr, $zak_number)
 	if ((!$conn_id) || (!$login_result)) {
 		return false;
 	} else {
-		$upload = ftp_put($conn_id, "orders/" . $zak_number . ".xml", $fileAdr, FTP_ASCII);
+		$upload = ftp_put ($conn_id, "orders/".$zak_number.".xml", $fileAdr, FTP_ASCII);
 		return true;
 	}
 	ftp_close($conn_id);
 }
 
-add_action('wp_ajax_send_cart', 'send_cart');
-add_action('wp_ajax_nopriv_send_cart', 'send_cart');
+add_action( 'wp_ajax_send_cart', 'send_cart' );
+add_action( 'wp_ajax_nopriv_send_cart', 'send_cart' );
 
-function send_cart()
-{
-	if (empty($_REQUEST['nonce'])) {
-		wp_die('0');
+function send_cart() {
+	if ( empty( $_REQUEST['nonce'] ) ) {
+		wp_die( '0' );
 	}
-
-	if (check_ajax_referer('NEHERTUTLAZIT', 'nonce', false)) {
+	
+	if ( check_ajax_referer( 'NEHERTUTLAZIT', 'nonce', false ) ) {
 
 		$headers = array(
-			'From: Сайт ' . COMPANY_NAME . ' <' . MAIL_RESEND . '>',
+			'From: Сайт '.COMPANY_NAME.' <'.MAIL_RESEND.'>',
 			'content-type: text/html',
 		);
-
+	
 		add_filter('wp_mail_content_type', create_function('', 'return "text/html";'));
-
+		
 		$adr_to_send = carbon_get_theme_option("as_email_send");
-		// $adr_to_send = (empty($adr_to_send))?"asmi046@gmail.com,rudikov-web@ya.ru":$adr_to_send;
+		$adr_to_send = (empty($adr_to_send))?"asmi046@gmail.com":$adr_to_send;
+		
+		$zak_number = "A".date("H").date("i").date("s").rand(100,999);
 
-		$zak_number = "A" . date("H") . date("i") . date("s") . rand(100, 999);
-
-		$mail_content = "<h1>Заказ на сайте №" . $zak_number . "</h1>";
-
-		$bscet_dec = json_decode(stripcslashes($_REQUEST["bascet"]));
-
+		$mail_content = "<h1>Заказ на сайте №".$zak_number."</h1>";
+		
+		$bscet_dec = json_decode(stripcslashes ($_REQUEST["bascet"]));
+		
 		// Отправка в базу основного заказа
 
 		global $wpdb;
-		$wpdb->insert("shop_zakhistory", array(
-			"agent" => empty($_COOKIE["agriautorise"]) ? "" : $_COOKIE["agriautorise"],
+		$wpdb->insert( "shop_zakhistory", array(
+			"agent" => empty($_COOKIE["agriautorise"])?"":$_COOKIE["agriautorise"],
 			"zak_number" => $zak_number,
 			"zak_summ" => $_REQUEST["bascetsumm"],
 			"zak_count" => count($bscet_dec),
@@ -485,91 +495,378 @@ function send_cart()
 			"client_mail" => $_REQUEST["mail"],
 			"client_adr" => $_REQUEST["adres"],
 			"client_comment" => $_REQUEST["comment"],
-		));
+		) );
 
 
 		$mail_content .= "<table style = 'text-align: left;' width = '100%'>";
-		$mail_content .= "<tr>";
-		$mail_content .= "<th></th>";
-		$mail_content .= "<th>ТОВАР</th>";
-		$mail_content .= "<th>КОЛИЧЕСТВО</th>";
-		$mail_content .= "<th>СУММА</th>";
-		$mail_content .= "</tr>";
-
-		$toXMLstr = "";
-
-		for ($i = 0; $i < count($bscet_dec); $i++) {
-			$toXMLstr .= tovarTo1c($bscet_dec[$i]);
 			$mail_content .= "<tr>";
-			$mail_content .= "<td><img src = '" . $bscet_dec[$i]->picture . "' width = '70' height = '70'></td>";
-			$mail_content .= "<td><a href = '" . $bscet_dec[$i]->lnk . "'>" . $bscet_dec[$i]->name . " / " . $bscet_dec[$i]->sku . "</a></td>";
-			$mail_content .= "<td>" . $bscet_dec[$i]->count . "</td>";
-			$mail_content .= "<td>" . $bscet_dec[$i]->subtotal . " р.</td>";
+				$mail_content .= "<th></th>";
+				$mail_content .= "<th>ТОВАР</th>";
+				$mail_content .= "<th>КОЛИЧЕСТВО</th>";
+				$mail_content .= "<th>СУММА</th>";
 			$mail_content .= "</tr>";
 
-			// Отправка в базу содержимого корзины
+			$toXMLstr = "";
 
-			$wpdb->insert("shop_zaktovar", array(
-				"zak_number" => $zak_number,
-				"price" => $bscet_dec[$i]->price,
-				"price_old" => empty($bscet_dec[$i]->oldprice) ? "" : $bscet_dec[$i]->oldprice,
-				"subtotal" => $bscet_dec[$i]->subtotal,
-				"sku" => $bscet_dec[$i]->sku,
-				"lnk" => $bscet_dec[$i]->lnk,
-				"name" => $bscet_dec[$i]->name,
-				"count" => $bscet_dec[$i]->count,
-				"picture" => $bscet_dec[$i]->picture,
-			));
-		}
+			for ($i = 0; $i<count($bscet_dec); $i++) {
+				$toXMLstr .= tovarTo1c($bscet_dec[$i]);
+				$mail_content .= "<tr>";
+					$mail_content .= "<td><img src = '".$bscet_dec[$i]->picture."' width = '70' height = '70'></td>";
+					$mail_content .= "<td><a href = '".$bscet_dec[$i]->lnk."'>".$bscet_dec[$i]->name." / ".$bscet_dec[$i]->sku."</a></td>";
+					$mail_content .= "<td>".$bscet_dec[$i]->count."</td>";
+					$mail_content .= "<td>".$bscet_dec[$i]->subtotal." р.</td>";
+				$mail_content .= "</tr>";
+
+				// Отправка в базу содержимого корзины
+
+				$wpdb->insert( "shop_zaktovar", array(
+					"zak_number" => $zak_number,
+					 "price" => $bscet_dec[$i]->price,
+					 "price_old" => empty($bscet_dec[$i]->oldprice)?"":$bscet_dec[$i]->oldprice,
+					 "subtotal" => $bscet_dec[$i]->subtotal,
+					"sku" => $bscet_dec[$i]->sku,
+					"lnk" => $bscet_dec[$i]->lnk,
+					"name" => $bscet_dec[$i]->name,
+					"count" => $bscet_dec[$i]->count,
+					"picture" => $bscet_dec[$i]->picture,
+				) );
+
+			}
 
 		$mail_content .= "</table>";
-		$mail_content .= "<h2>Сумма: " . $_REQUEST["bascetsumm"] . " р.</h2>";
+		$mail_content .= "<h2>Сумма: ".$_REQUEST["bascetsumm"]." р.</h2>";
 
 
-		$zaktpl = file_get_contents(__DIR__ . '/zaktempl.xml', true);
+		 $zaktpl = file_get_contents(__DIR__.'/zaktempl.xml', true);
 		// ---- Формирование файла для 1С
 
 		$clname = 	explode(" ", $_REQUEST["name"])[0];
 		$clnames = 	explode(" ", $_REQUEST["name"])[1];
 
-		$zaktpl = str_replace("{zaknum}", $zak_number, $zaktpl);
-		$zaktpl = str_replace("{zakdata}", date("Y-m-d"), $zaktpl);
-		$zaktpl = str_replace("{zaksumm}", $_REQUEST["bascetsumm"], $zaktpl);
-		$zaktpl = str_replace("{zaktime}", date("H:i:s"), $zaktpl);
-		$zaktpl = str_replace("{name}", $clname, $zaktpl);
-		$zaktpl = str_replace("{inn}", ($_REQUEST["inn"] == "null") ? "" : $_REQUEST["inn"], $zaktpl);
-		$zaktpl = str_replace("{sname}", $clnames, $zaktpl);
-		$zaktpl = str_replace("{adr}", $_REQUEST["adres"], $zaktpl);
-		$zaktpl = str_replace("{clientname}", $clname . " " . $clnames, $zaktpl);
-		$zaktpl = str_replace("{clientnamefull}", $clname . " " . $clnames, $zaktpl);
-		$zaktpl = str_replace("{clienphone}",  $_REQUEST["phone"], $zaktpl);
-		$zaktpl = str_replace("{clientmail}", $_REQUEST["mail"], $zaktpl);
-		$zaktpl = str_replace("{zakcomment}", $_REQUEST["comment"], $zaktpl);
-		$zaktpl = str_replace("{tovars}", $toXMLstr, $zaktpl);
+		 $zaktpl = str_replace("{zaknum}", $zak_number, $zaktpl);
+		 $zaktpl = str_replace("{zakdata}", date("Y-m-d"), $zaktpl);
+		 $zaktpl = str_replace("{zaksumm}", $_REQUEST["bascetsumm"], $zaktpl);
+		 $zaktpl = str_replace("{zaktime}", date("H:i:s"), $zaktpl);
+		 $zaktpl = str_replace("{name}", $clname, $zaktpl);
+		 $zaktpl = str_replace("{inn}", ($_REQUEST["inn"] == "null")?"":$_REQUEST["inn"], $zaktpl);
+		 $zaktpl = str_replace("{sname}", $clnames, $zaktpl);
+		 $zaktpl = str_replace("{adr}", $_REQUEST["adres"], $zaktpl);
+		 $zaktpl = str_replace("{clientname}", $clname." ".$clnames, $zaktpl);
+		 $zaktpl = str_replace("{clientnamefull}", $clname." ".$clnames, $zaktpl);
+		 $zaktpl = str_replace("{clienphone}",  $_REQUEST["phone"], $zaktpl);
+		 $zaktpl = str_replace("{clientmail}", $_REQUEST["mail"], $zaktpl);
+		 $zaktpl = str_replace("{zakcomment}", $_REQUEST["comment"], $zaktpl);
+		 $zaktpl = str_replace("{tovars}", $toXMLstr, $zaktpl);
+		
+		 $fileAdr = __DIR__."/1s/orders/".$zak_number.".xml";
+		 file_put_contents($fileAdr, $zaktpl);
+		
+		 $ftprez = sendToFtp($fileAdr, $zak_number);
 
-		$fileAdr = __DIR__ . "/1s/orders/" . $zak_number . ".xml";
-		file_put_contents($fileAdr, $zaktpl);
-
-		$ftprez = sendToFtp($fileAdr, $zak_number);
-
-		$mail_content .= "<strong>Имя:</strong> " . $_REQUEST["name"] . "<br/>";
-		$mail_content .= "<strong>Телефон:</strong> " . $_REQUEST["phone"] . "<br/>";
-		$mail_content .= "<strong>e-mail:</strong> " . $_REQUEST["mail"] . "<br/>";
-		$mail_content .= "<strong>Адрес:</strong> " . $_REQUEST["adres"] . "<br/>";
-		$mail_content .= "<strong>Комментарий:</strong> " . $_REQUEST["comment"] . "<br/>";
+		$mail_content .= "<strong>Имя:</strong> ".$_REQUEST["name"]."<br/>";
+		$mail_content .= "<strong>Телефон:</strong> ".$_REQUEST["phone"]."<br/>";
+		$mail_content .= "<strong>e-mail:</strong> ".$_REQUEST["mail"]."<br/>";
+		$mail_content .= "<strong>Адрес:</strong> ".$_REQUEST["adres"]."<br/>";
+		$mail_content .= "<strong>Комментарий:</strong> ".$_REQUEST["comment"]."<br/>";
 		// $mail_content .= "<strong>FTP:</strong> ".($ftprez)?"Загружен":"Не загружен"."<br/>";
 
-		$mail_them = "Заказ с сайта";
+		$mail_them = "Заказ на сайте Strader";
 
 
+		
+		if (wp_mail($adr_to_send, $mail_them, $mail_content, $headers)) 
+		{
 
-		if (wp_mail($adr_to_send, $mail_them, $mail_content, $headers)) {
-
-			wp_die(json_encode(array("send" => true)));
-		} else {
-			wp_die('Ошибка отправки!', '', 403);
+			wp_die(json_encode(array("send" => true )));
 		}
+		else {
+			wp_die( 'Ошибка отправки!', '', 403 );
+		}
+		
 	} else {
-		wp_die('НО-НО-НО!', '', 403);
+		wp_die( 'НО-НО-НО!', '', 403 );
 	}
 }
+
+
+// Личный кабинет ==================================================
+// Регистрация
+add_action( 'wp_ajax_user_register', 'user_register' );
+add_action( 'wp_ajax_nopriv_user_register', 'user_register' );
+
+function user_register() {
+	if ( empty( $_REQUEST['nonce'] ) ) {
+		wp_die( '0' );
+	}
+	
+	if ( check_ajax_referer( 'NEHERTUTLAZIT', 'nonce', false ) ) {
+	
+	global $wpdb;
+		
+	$email_key = rand(10000, 99999);
+
+	$insert_rez = $wpdb->insert( "shop_users", array(
+		"name" => $_REQUEST["name"],
+		"company_name" => $_REQUEST["nameorg"],
+		"mail" => $_REQUEST["email"],
+		"phone" => $_REQUEST["tel"],
+		"inn" => $_REQUEST["inn"],
+		"password" => md5($_REQUEST["password"]."agrib"),
+		"autorize" => 0,
+		"autorizeKey" => $email_key
+	) );
+
+	if (!empty($insert_rez)) {
+		$headers = array(
+			'From: Сайт '.COMPANY_NAME.' <'.MAIL_RESEND.'>', 
+			'content-type: text/html',
+		);
+		
+		add_filter('wp_mail_content_type', create_function('', 'return "text/html";'));
+	 
+		$mail_message = 
+		"<h1>Подтверждение регистрации в личном кабинете Agribest.ru</h1>".
+		"<p>Уважаемый клиент, для подтверждения учетной записи перейдите по ссылке:<p>".
+		"<a href = '".get_the_permalink(230)."?id=".$wpdb->insert_id."&k=".$email_key."'>Активировать учетную запись.</a>";
+	
+		if (wp_mail($_REQUEST["email"], "Подтверждение регистрации", $mail_message, $headers))
+		{
+			$mail_message = 
+			"<h1>В личном кабинете зарегистрированна компания:</h1>".
+			"Представитель: <strong>".$_REQUEST["name"]."</strong> <br/>".
+			"Организация: <strong>".$_REQUEST["nameorg"]."</strong> <br/>".
+			"ИНН: <strong>".$_REQUEST["inn"]."</strong> <br/>".
+			"E-mail: <strong>".$_REQUEST["email"]."</strong> <br/>".
+			"Телефон: <strong>".$_REQUEST["tel"]."</strong> <br/>";
+
+			wp_mail(carbon_get_theme_option( 'as_email_send' ), "Регистрация в личном кабинете", $mail_message, $headers);
+
+			wp_die(json_encode(array("send" => true )));
+		}
+		else 
+			 wp_die( 'Mail no send!', '', 403 );	
+
+	} else {
+		wp_die( 'Bad insert to base!', '', 403 );		
+	}
+
+		
+		
+	} else {
+		wp_die( 'НО-НО-НО!', '', 403 );
+	}
+}
+
+// Восстановление пароля
+add_action( 'wp_ajax_pass_rec', 'pass_rec' );
+add_action( 'wp_ajax_nopriv_pass_rec', 'pass_rec' );
+
+function pass_rec() {
+	if ( empty( $_REQUEST['nonce'] ) ) {
+		wp_die( '0' );
+	}
+	
+	if ( check_ajax_referer( 'NEHERTUTLAZIT', 'nonce', false ) ) {
+	
+	global $wpdb;
+		
+	$email_key = rand(1000, 9999);
+
+	$user_feeld =  $wpdb->get_results("SELECT * FROM `shop_users` WHERE `mail` = '".$_REQUEST["email"]."'");
+	if (!empty($user_feeld)) {
+		
+		$updateRez = $wpdb->update("shop_users",
+																 array(
+									 "autorizeKey" => $email_key,
+																 ), 
+																 array(
+																		 "id" => $user_feeld[0]->id, 
+																 )
+															);   
+
+		$headers = array(
+			'From: Сайт '.COMPANY_NAME.' <'.MAIL_RESEND.'>', 
+			'content-type: text/html',
+		);
+		
+		add_filter('wp_mail_content_type', create_function('', 'return "text/html";'));
+	 
+		$mail_message = 
+		"<h1>Восстановление пароля</h1>".
+		"<p>Для восстановления пароля к Вашей учетной записи перейдите по ссылке:<p>".
+		"<a href = '".get_the_permalink(226)."?id=".$user_feeld[0]->id."&k=".$email_key."'>Восстановить пароль.</a>";
+	
+		if (wp_mail($user_feeld[0]->mail, "Восстановление пароля", $mail_message, $headers))
+		{
+			wp_die(json_encode(array("send" => true )));
+		}
+		else 
+			 wp_die( 'Mail no send!', '', 403 );	
+
+	} else {
+		wp_die( 'No user in base!', '', 403 );		
+	}
+
+		
+		
+	} else {
+		wp_die( 'НО-НО-НО!', '', 403 );
+	}
+}
+
+// Авторизация
+add_action( 'wp_ajax_user_autorization', 'user_autorization' );
+add_action( 'wp_ajax_nopriv_user_autorization', 'user_autorization' );
+
+function user_autorization() {
+	if ( empty( $_REQUEST['nonce'] ) ) {
+		wp_die( '0' );
+	}
+	
+	if ( check_ajax_referer( 'NEHERTUTLAZIT', 'nonce', false ) ) {
+	$mail = $_REQUEST["email"];
+	$password = $_REQUEST["password"];
+	$passwordSalt = md5($_REQUEST["password"]."agrib");
+
+	$token = rand(200000, 300000);
+
+	global $wpdb;
+	$user_feeld =  $wpdb->get_results("SELECT * FROM `shop_users` WHERE `mail` = '".$mail."' AND `password` =  '".$passwordSalt."'");
+
+	if (!empty($user_feeld)) {
+		if (empty($user_feeld[0]->autorize))
+			wp_die(json_encode(array("error" => "Учетная запись не активирована. Проверьте e-amil в том числе и папку 'Спам'" )), '', 403);
+		
+		$updateRez = $wpdb->update("shop_users",
+			array(
+				"autorizeKey" => $token,
+			), 
+			array(
+				"id" => $user_feeld[0]->id, 
+			)
+		 );   
+
+		wp_die(json_encode(array(
+			"name" => $user_feeld[0]->name,
+			"company_name" => $user_feeld[0]->company_name,
+			"mail" => $user_feeld[0]->mail,
+			"phone" => $user_feeld[0]->phone,
+			"inn" => $user_feeld[0]->inn,
+			"token" => $token
+		)));
+		
+
+	} else {
+		wp_die(json_encode(array("error" => "Пользователь с таким E-mail не найден.", "q" => "" )), '', 403);
+	}
+
+		
+		
+	} else {
+		wp_die( 'НО-НО-НО!', '', 403 );
+	}
+}
+
+// Подтверждение
+add_action( 'wp_ajax_relogin', 'relogin' );
+add_action( 'wp_ajax_nopriv_relogin', 'relogin' );
+
+function relogin() {
+	if ( empty( $_REQUEST['nonce'] ) ) {
+		wp_die( '0' );
+	}
+	
+	if ( check_ajax_referer( 'NEHERTUTLAZIT', 'nonce', false ) ) {
+	
+	$mail = $_REQUEST["email"];
+	
+	global $wpdb;
+
+	
+	$updateRez = $wpdb->update("shop_users",
+			array(
+				"autorizeKey" => 0,
+			), 
+			array(
+				"mail" => $mail, 
+			)
+		 );  
+		 wp_die(json_encode(array("dell"=> true))); 
+		
+	} else {
+		wp_die( 'НО-НО-НО!', '', 403 );
+	}
+}
+
+add_action( 'wp_ajax_get_zakinfo', 'get_zakinfo' );
+add_action( 'wp_ajax_nopriv_get_zakinfo', 'get_zakinfo' );
+
+function get_zakinfo() {
+	if ( empty( $_REQUEST['nonce'] ) ) {
+		wp_die( '0' );
+	}
+	
+	if ( check_ajax_referer( 'NEHERTUTLAZIT', 'nonce', false ) ) {
+	
+	$token = $_COOKIE["agritoken"];
+	$email = $_COOKIE["agriautorise"];
+	
+
+	global $wpdb;
+	$userVerefy = $wpdb->get_results("SELECT * FROM `shop_users` WHERE `mail` = '".$email."' AND `autorizeKey` = '".$token."'");
+
+	if (empty($userVerefy)) {
+		wp_die(json_encode(array("error"=> "Верификация не пройденав")), '', 403); 
+	}
+
+	$klientZak = $wpdb->get_results("SELECT * FROM `shop_zakhistory` WHERE `agent` = '".$email."'");
+
+	$compileResult = array();
+
+	foreach($klientZak as $elem)
+		$compileResult[$elem->zak_number] = array(
+			"zak_info" => $elem,
+			"open_detale" => false,
+			"zak_detale" => array()
+		);	 
+
+	wp_die(json_encode($compileResult)); 	
+		
+	} else {
+		wp_die( 'НО-НО-НО!', '', 403 );
+	}
+}
+
+add_action( 'wp_ajax_get_zak_detail', 'get_zak_detail' );
+add_action( 'wp_ajax_nopriv_get_zak_detail', 'get_zak_detail' );
+
+function get_zak_detail() {
+	if ( empty( $_REQUEST['nonce'] ) ) {
+		wp_die( '0' );
+	}
+	
+	if ( check_ajax_referer( 'NEHERTUTLAZIT', 'nonce', false ) ) {
+	
+	$token = $_COOKIE["agritoken"];
+	$email = $_COOKIE["agriautorise"];
+	
+
+	global $wpdb;
+	$userVerefy = $wpdb->get_results("SELECT * FROM `shop_users` WHERE `mail` = '".$email."' AND `autorizeKey` = '".$token."'");
+
+	if (empty($userVerefy)) {
+		wp_die(json_encode(array("error"=> "Верификация не пройденав")), '', 403); 
+	}
+
+	$klientZakDetale = $wpdb->get_results("SELECT * FROM `shop_zaktovar` WHERE `zak_number` = '".$_REQUEST["zaknumber"]."'");
+ 
+
+	wp_die(json_encode($klientZakDetale)); 	
+		
+	} else {
+		wp_die( 'НО-НО-НО!', '', 403 );
+	}
+}
+
+	
+?>
