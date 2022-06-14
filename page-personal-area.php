@@ -21,7 +21,7 @@
 							yoast_breadcrumb( '<p id="breadcrumbs">','</p>' );   
 						}
 					?> 
-    			<h1 class="header-sec__title">Авторизация</h1>
+    			<h1 class="header-sec__title">Авторизация</h1> 
   			</div>
 			</div>
 		<div class="content">

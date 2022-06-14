@@ -27,7 +27,7 @@
 				<form action="#" class="authoriz__form reviews__form">
 					<input type="email" name="email" placeholder="Email" id="form-emailw" class="reviews__form-input input">
 					<input type="password" name="password" placeholder="Пароль" id="form-telw" class="reviews__form-input input">
-					<button type="submit" class="reviews__form-btn agriwind btn">Войти</button>
+					<button type="submit" class="reviews__form-btn product-sec__info-btn-bascet agriwind btn">Войти</button>
 				</form> 
 			</div>
 		</section>
