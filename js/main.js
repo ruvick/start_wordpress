@@ -130,6 +130,11 @@ function generatePDF() {
 {/* <a href="#" class="card-wrap-properties-links-link" onclick="generatePDF();">Скачать страницу в PDF</p></a> */ }
 // ----------------------------------------------------------------------------------------------------------------------------------------
 
+// Маска телефона
+var inputmask_phone = { "mask": "+9(999)999-99-99" };
+jQuery("input[type=tel]").inputmask(inputmask_phone);
+// ----------------------------------------------------------------------------------------------------------------------------------------
+
 //BodyLock
 function body_lock(delay) {
 	let body = document.querySelector("body");
