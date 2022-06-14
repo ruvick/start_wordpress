@@ -30,7 +30,17 @@ function number_format() {
 }
 
 
+function light_box_set() {
+	let elements = document.querySelectorAll('.wp-block-gallery a');
+	for (let elem of elements) {
+		elem.dataset.fslightbox = "gallery";
+	}
+	refreshFsLightbox();
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
+	light_box_set();
 	number_format();
 	cart_recalc();
 	inBascetCounting();
