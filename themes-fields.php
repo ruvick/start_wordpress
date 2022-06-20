@@ -65,6 +65,16 @@ Container::make( 'theme_options', __( 'Настройки темы', 'crb' ) )
         ->set_width(10),
         )) 
     ))
+    ->add_tab('Вставки внешних кодов', array(
+      Field::make('text', 'code_yandex_metrica', 'Код для Яндекс.Метрики')   
+      ->set_width(50),
+      Field::make('text', 'code_google_counter', 'Код для Google счётчика')   
+      ->set_width(50),
+      Field::make('text', 'additional_code_head', 'Дополнительный код перед закрывающим тегом head')   
+      ->set_width(50),
+      Field::make('text', 'additional_code_body', 'Дополнительный код после тега body')   
+      ->set_width(50),
+    ))
     ->add_tab('Контакты', array(
         Field::make( 'text', 'as_company', __( 'Название' ) )
           ->set_width(50),
@@ -156,7 +166,7 @@ Container::make( 'theme_options', __( 'Настройки темы', 'crb' ) )
       ->add_fields( array(
         Field::make('image', 'gal_img', 'Изображение' )->set_width(30),
         Field::make('text', 'gal_img_sku', 'ID для модификации')->set_width(30),
-        Field::make('text', 'gal_img_alt', 'alt и title')->set_width(30)        
+        Field::make('text', 'gal_img_alt', 'alt и title')->set_width(30)         
       ) ),
 
     //   Field::make('complex', 'complex_analogs', 'Ближайшие аналоги')
