@@ -7,7 +7,7 @@ define("MAIL_RESEND", "noreply@ultrakresla.ru");
 //----Инструкции по подключению полей см. в комментариях themes-fields.php
 include "carbon-fields/carbon-fields-plugin.php";
 
-use Carbon_Fields\Container;
+use Carbon_Fields\Container; 
 use Carbon_Fields\Field;
 
 add_action('carbon_fields_register_fields', 'crb_attach_theme_options'); 
@@ -877,4 +877,4 @@ function get_zak_detail() {
 
 include "sender.php"
 
-?>
+?> 
