@@ -232,4 +232,11 @@ Container::make( 'theme_options', __( 'Настройки темы', 'crb' ) )
 
   // ));
 
+	// Container::make( 'term_meta', __( 'Category Properties' ) )
+	// ->where( 'term_taxonomy', '=', 'category' )
+	// ->add_fields( array(
+	// 	Field::make('file', 'cat_price', 'Прайс-лист'),
+	// // Field::make( 'image', 'crb_thumb', __( 'Thumbnail' ) ),
+	// ) );
+
 ?>
